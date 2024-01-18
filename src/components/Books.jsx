@@ -101,27 +101,40 @@ const Books = () => {
 
     if (sortValue === "year_asc") {
       sortedBooks = [...books].sort((a, b) => a.year - b.year);
-    }
-    else if (sortValue === "year_desc") {
+    } else if (sortValue === "year_desc") {
       sortedBooks = [...books].sort((a, b) => b.year - a.year);
-    }
-    else if (sortValue === "name_asc") {
+    } else if (sortValue === "name_asc") {
       sortedBooks = [...books].sort((a, b) => a.name.localeCompare(b.name));
-    }
-    else if (sortValue === "name_desc") {
+    } else if (sortValue === "name_desc") {
       sortedBooks = [...books].sort((a, b) => b.name.localeCompare(a.name));
     }
     setBooks(sortedBooks);
-  }
+  };
+
+  const handleIsFavorite = (bookId) => {
+    const favourite = books.map((book) => {
+      if (book.id === bookId) {
+        return {...book, isFavorite: !book.isFavorite };
+      } else {
+        return book;
+      }
+    });
+    setBooks(favourite);
+  };
 
   return (
     <>
-      <Header handleGetSearch={handleGetSearch}
+      <Header
+        handleGetSearch={handleGetSearch}
         handleSort={handleSort}
       ></Header>
       <div className="container mx-auto grid grid-cols-1 gap-8 max-w-7xl md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {books.map((book) => (
-          <BookCard key={book.id} book={book}></BookCard>
+          <BookCard
+            key={book.id}
+            book={book}
+            handleIsFavorite={handleIsFavorite}
+          ></BookCard>
         ))}
       </div>
     </>
